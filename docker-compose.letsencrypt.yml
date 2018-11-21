@@ -1,0 +1,84 @@
+version: "2"
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    network_mode: bridge
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-proxy-le
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    network_mode: bridge
+
+  nginx:
+    container_name: app_nginx
+    build: ./.docker/nginx
+    links:
+        - nodejs_api
+        - nodejs_www
+    ports:
+        - "8888"
+    environment:
+      VIRTUAL_HOST: tatara.co
+      VIRTUAL_PORT: 8888
+      LETSENCRYPT_HOST: tatara.co
+      LETSENCRYPT_EMAIL: junxiang.oriint@gmail.com
+
+  nodejs_api:
+    restart: always 
+    container_name: app_nodejs_api
+    volumes:
+      - ./api:/var/www/html
+    build:
+      context: ./api/
+      dockerfile: ../.docker/node/api/Dockerfile
+    # links:
+    #   - mysql:mysql
+    ports:
+      - "3000"
+  
+  nodejs_www:
+    restart: always 
+    container_name: app_nodejs_www
+    volumes:
+      - ./www:/var/www/html
+    build:
+      context: ./www/
+      dockerfile: ../.docker/node/www/Dockerfile
+    ports:
+      - "3000"
+volumes:
+  conf:
+  vhost:
+  html:
+  dhparam:
+  certs:
+  # mysql:
+  #   build: ./.docker/mysql
+  #   container_name: app_mysql
+  #   ports:
+  #     - "127.0.0.1:3306:3306"
+  #   volumes:
+  #     - ./.docker/mysql/data:/var/lib/mysql
+  #     - ./.docker/mysql/my.cnf:/etc/my.cnf
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 123456
+  #     MYSQL_DATABASE: myapp
+  #   restart: always

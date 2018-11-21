@@ -1,0 +1,55 @@
+version: "3.3"
+services:
+  nginx:
+    container_name: app_nginx
+    build: ./.docker/nginx
+    links:
+        - nodejs_api
+        - nodejs_www
+    ports:
+        - "8888:80"
+        # - "443:443"
+
+  nodejs_www:
+    restart: always 
+    container_name: app_nodejs_www
+    volumes:
+      - ./www:/var/www/html
+    build:
+      context: ./www/
+      dockerfile: ../.docker/node/www/Dockerfile
+    ports:
+      - "3000"
+
+  nodejs_api:
+    restart: always 
+    container_name: app_nodejs_api
+    volumes:
+      - ./api:/var/www/html
+    build:
+      context: ./api/
+      dockerfile: ../.docker/node/api/Dockerfile
+    links:
+      - mysql:mysql
+    ports:
+      - "3000"
+    # networks:
+    #   - backend
+
+  mysql:
+    build: ./.docker/mysql
+    container_name: app_mysql
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ./.docker/mysql/data:/var/lib/mysql
+      - ./.docker/mysql/my.cnf:/etc/my.cnf
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: myapp
+    restart: always
+    # networks:
+    #   - backend
+
+# networks:
+#   backend:

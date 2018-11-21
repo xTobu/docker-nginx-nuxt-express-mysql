@@ -1,0 +1,12 @@
+*
+!www
+!api
+!inc
+*/.nuxt
+*/node_modules
+*/bower_components
+**/*.log
+**/Dockerfile
+**/.gitignore
+
+# 好像沒反應 學習中

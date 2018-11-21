@@ -1,0 +1,12 @@
+apps:
+  - script   : 'html/bin/www'
+    name     : 'node-server'
+    # instances: 4
+    # exec_mode: 'cluster'
+    watch  : true
+    watch_options: 
+      usePolling: true # pm2-dev not working: https://github.com/keymetrics/docker-pm2/issues/22#issuecomment-399666268
+    env    :
+      NODE_ENV: development
+    env_production:
+      NODE_ENV: production
