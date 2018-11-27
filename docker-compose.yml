@@ -10,6 +10,16 @@ services:
         - "8888:80"
         # - "443:443"
 
+  caddy:
+    container_name: app_caddy
+    build: ./.docker/caddy
+    links:
+        - nodejs_api
+        - nodejs_www
+    ports:
+        - "8889:80"
+        # - "443:443"
+        
   nodejs_www:
     restart: always 
     container_name: app_nodejs_www

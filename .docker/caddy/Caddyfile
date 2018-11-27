@@ -1,0 +1,12 @@
+localhost:80 {
+    gzip
+    timeouts none
+    proxy / nodejs_www:3000 {
+        transparent
+	}
+    proxy /api nodejs_api:3000 {
+		websocket
+        transparent
+	}
+}
+
