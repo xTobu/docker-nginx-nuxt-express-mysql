@@ -1,14 +1,14 @@
 version: "3.3"
 services:
-  nginx:
-    container_name: app_nginx
-    build: ./.docker/nginx
-    links:
-        - nodejs_api
-        - nodejs_www
-    ports:
-        - "8888:80"
-        # - "443:443"
+  # nginx:
+  #   container_name: app_nginx
+  #   build: ./.docker/nginx
+  #   links:
+  #       - nodejs_api
+  #       - nodejs_www
+  #   ports:
+  #       - "8888:80"
+  #       # - "443:443"
 
   caddy:
     container_name: app_caddy
