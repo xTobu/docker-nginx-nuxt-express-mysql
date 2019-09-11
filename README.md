@@ -3,7 +3,7 @@
 
 # docker-nginx-nuxt-express-mysql 
 
-> Docker, Docker-Compose, Nginx, Nuxt, Express API, MySql
+> Docker, Docker-Compose, Nginx, Nuxt, Express API, MySQL
 
 Simple JS full-stack environment with docker for development 
 

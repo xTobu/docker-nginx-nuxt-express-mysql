@@ -53,6 +53,7 @@ services:
       - "127.0.0.1:3306:3306"
     volumes:
       - ./.docker/mysql/data:/var/lib/mysql
+      - ./.docker/mysql/initdb.d:/docker-entrypoint-initdb.d
       - ./.docker/mysql/my.cnf:/etc/my.cnf
     environment:
       MYSQL_ROOT_PASSWORD: 123456
