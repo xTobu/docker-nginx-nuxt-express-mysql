@@ -7,9 +7,9 @@ const db_option = {
     port: 3306
 };
 
-exports.get_index = function (req, res) {
+exports.getUsers = function (req, res) {
     const connection = mysql.createConnection(db_option);
-    const query = 'SELECT * FROM users';
+    const query = 'SELECT * FROM user';
     connection.query(query, function (err, rows, fields) {
         if (err) throw err;
         res.json({
@@ -19,9 +19,16 @@ exports.get_index = function (req, res) {
     });
 };
 
-exports.post_index = function (req, res) {
-    console.dir(req.body);
-    res.json({
-        user: req.body.name
+exports.postUser = function (req, res) {
+    const connection = mysql.createConnection(db_option);
+    const query = 'INSERT INTO user SET ?';
+    connection.query(query, req.body, function (error, results, fields) {
+        if (error) throw error;
+        res.json({
+            data: {
+                id: results.insertId
+            },
+            req: req.body
+        });
     });
 };
