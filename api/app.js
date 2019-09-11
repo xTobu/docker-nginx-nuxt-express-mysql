@@ -23,8 +23,8 @@ app.use(multer());
 
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'pug');
 
 // app.use(logger('dev'));
 // app.use(express.json());
@@ -34,9 +34,10 @@ app.set('view engine', 'pug');
 app.use(cookieParser());
 
 // gzip
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+// disable route "/"
+// app.use('/', indexRouter);
 
 // API Route 
 app.use('/api/user', api_userRouter);
